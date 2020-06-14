@@ -3,16 +3,16 @@ require ["fileinto", "mailbox", "variables", "imap4flags", "regex"];
 #require ["fileinto", "mailbox", "variables", "imap4flags", "regex"];
 if address :is "from" "notifications@github.com" {
 	set "gitfolder" "Lists.GitHub";
-	if header :matches "List-ID" "*<*.*.github.com>" {
-		set "gituser" "${3}";
+	if header :matches "List-ID" "*/* <*.github.com>" {
+		set "gituser" "${1}";
 		set "gitrepository" "${2}";
-		# Replace . or + by dashes for proper IMAP folder name
+		# Replace . by dashes for proper IMAP folder name
 		# Sieve has no regex global replace, so do it at max 3 occurences
-		if string :regex "${gitrepository}" "(.*)[.+]+(.*)" {
+		if string :matches "${gitrepository}" "*.*" {
 			set "gitrepository" "${1}-${2}";
-			if string :regex "${gitrepository}" "(.*)[.+]+(.*)" {
+			if string :matches "${gitrepository}" "*.*" {
 				set "gitrepository" "${1}-${2}";
-				if string :regex "${gitrepository}" "(.*)[.+]+(.*)" {
+				if string :matches "${gitrepository}" "*.*" {
 					set "gitrepository" "${1}-${2}";
 				}
 			}
@@ -20,10 +20,10 @@ if address :is "from" "notifications@github.com" {
 		if header :matches "X-GitHub-Reason" "*" {
 			set "gitreason" "${1}";
 			# Extract the topic: pull, push, issues...
-			if header :regex "Message-ID" "([^/[:digit:]]+)/[[:digit:]]+(/([^/[:digit:]]+))?" {
+			if header :regex "Message-ID" ".*(releases|issues?|commit|pull|push)/[[:xdigit:]]+/?(issue_event|push)?.*" {
 				set "gittopic" "${1}";
 				# Optional capture of git event like: issue_event
-				set "gitevent" "${3}"; 
+				set "gitevent" "${2}"; 
 			}
 			if string :is "${gitreason}" "review_requested" {
 				# Review request is flagged and reaseon tagged first as it determines color in Thunderbird
