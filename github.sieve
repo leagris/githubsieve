@@ -25,16 +25,15 @@ if address :is "from" "notifications@github.com" {
 				# Optional capture of git event like: issue_event
 				set "gitevent" "${2}"; 
 			}
-			if string :is "${gitreason}" "review_requested" {
-				# Review request is flagged and reaseon tagged first as it determines color in Thunderbird
-				setflag "MyFlags" [ "\\Flagged", "${gitreason}", "${gittopic}" ];
-			} else {
-				setflag "MyFlags" [ "${gittopic}", "${gitreason}" ];
-			}
+			setflag "MyFlags" [ "${gittopic}", "${gitreason}" ];
 			# Add git event flag if any
 			if not string :is "${gitevent}" "" {
 				addflag "MyFlags" "${gitevent}";
-				}
+			}
+			if string :is "${gitreason}" "review_requested" {
+				# Review request is system flagged and tagged TODO $label4 for Thunderbird
+				addflag "MyFlags" [ "\\Flagged", "\$label4" ];
+			}
 		}
 		fileinto :flags "${MyFlags}" :create "${gitfolder}.${gituser}.${gitrepository}";
 	}
