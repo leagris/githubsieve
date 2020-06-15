@@ -1,4 +1,3 @@
-require ["fileinto", "mailbox", "variables", "imap4flags", "regex"];
 # rule:[notifications@github.com]
 #require ["fileinto", "mailbox", "variables", "imap4flags", "regex"];
 if address :is "from" "notifications@github.com" {
