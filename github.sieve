@@ -1,5 +1,5 @@
 # rule:[notifications@github.com]
-#require ["fileinto", "mailbox", "variables", "imap4flags", "regex"];
+# require ["fileinto", "mailbox", "variables", "imap4flags", "regex"];
 if address :is "from" "notifications@github.com" {
 	set "gitfolder" "Lists.GitHub";
 	if header :matches "List-ID" "*/* <*.github.com>" {
