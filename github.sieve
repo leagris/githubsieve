@@ -1,25 +1,14 @@
 # rule:[notifications@github.com]
-# require ["fileinto", "mailbox", "variables", "imap4flags", "regex"];
+#require ["fileinto", "mailbox", "variables", "imap4flags", "regex"];
 if address :is "from" "notifications@github.com" {
-	set "gitfolder" "Lists.GitHub";
+	set "gitfolder" "Lists/GitHub";
 	if header :matches "List-ID" "*/* <*.github.com>" {
 		set "gituser" "${1}";
 		set "gitrepository" "${2}";
-		# Replace . by dashes for proper IMAP folder name
-		# Sieve has no regex global replace, so do it at max 3 occurences
-		if string :matches "${gitrepository}" "*.*" {
-			set "gitrepository" "${1}-${2}";
-			if string :matches "${gitrepository}" "*.*" {
-				set "gitrepository" "${1}-${2}";
-				if string :matches "${gitrepository}" "*.*" {
-					set "gitrepository" "${1}-${2}";
-				}
-			}
-		}
 		if header :matches "X-GitHub-Reason" "*" {
 			set "gitreason" "${1}";
 			# Extract the topic: pull, push, issues...
-			if header :regex "Message-ID" ".*(releases|issues?|commit|pull|push)/[[:xdigit:]]+/?(issue_event|push)?.*" {
+			if header :regex "Message-ID" ".*(releases|issues?|commit|pull)/[[:xdigit:]]+/?(issue_event|push|review)?.*" {
 				set "gittopic" "${1}";
 				# Optional capture of git event like: issue_event
 				set "gitevent" "${2}"; 
@@ -34,7 +23,7 @@ if address :is "from" "notifications@github.com" {
 				addflag "MyFlags" [ "\\Flagged", "\$label4" ];
 			}
 		}
-		fileinto :flags "${MyFlags}" :create "${gitfolder}.${gituser}.${gitrepository}";
+		fileinto :flags "${MyFlags}" :create "${gitfolder}/${gituser}/${gitrepository}";
 	}
 	stop;
 }
