@@ -1,3 +1,7 @@
+user_pref("mailnews.tags.autor.color", "#ca1800");
+user_pref("mailnews.tags.autor.tag", "author");
+user_pref("mailnews.tags.comment.color", "#4f5aa0");
+user_pref("mailnews.tags.comment.tag", "comment");
 user_pref("mailnews.tags.commit.color", "#3d00aa");
 user_pref("mailnews.tags.commit.tag", "commit");
 user_pref("mailnews.tags.done.color", "#009900");
@@ -14,5 +18,9 @@ user_pref("mailnews.tags.push.color", "#059400");
 user_pref("mailnews.tags.push.tag", "push");
 user_pref("mailnews.tags.releases.color", "#00a000");
 user_pref("mailnews.tags.releases.tag", "releases");
+user_pref("mailnews.tags.review.color", "#b0001a");
+user_pref("mailnews.tags.review.tag", "review");
 user_pref("mailnews.tags.review_requested.color", "#0026b8");
 user_pref("mailnews.tags.review_requested.tag", "review_requested");
+user_pref("mailnews.tags.your_activity.color", "#620026");
+user_pref("mailnews.tags.your_activity.tag", "your_activity");
